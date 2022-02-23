@@ -46,33 +46,47 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClick(View view) {
-        mTotalIncome = findViewById(R.id.totalIncome);
-        mBenefits = findViewById(R.id.enterBenefits);
-        mUIFExclusion = findViewById(R.id.editTextNumber3);
-        mEmployeeContribution = findViewById(R.id.employeeAns);
-        mEmployerContribution = findViewById(R.id.employerContAns);
-        mTotalUIF = findViewById(R.id.totEmpCont);
+        mTotalIncome = findViewById(R.id.totalIncome); // total income text edit
+        mBenefits = findViewById(R.id.enterBenefits); // benefits text edit
+        mUIFExclusion = findViewById(R.id.editTextNumber3); // UIF exclussion text edit
+        mEmployeeContribution = findViewById(R.id.employeeAns); // employee contribution text view
+        mEmployerContribution = findViewById(R.id.employerContAns); // employer contribution text view
+        mTotalUIF = findViewById(R.id.totEmpCont); // Total UIF contributions
         mButtonCalculate = findViewById(R.id.button);
 
-        if (mBenefits.getText().toString().length() == 0){
+        if (mBenefits.getText().toString().length() == 0){ // if user leaves benefits blank it sets it to zero
             mBenefits.setText("0");
         }
-        if (mUIFExclusion.getText().toString().length() == 0){
+        if (mUIFExclusion.getText().toString().length() == 0){// if user leaves UIFExclusions blank it sets it to zero
             mUIFExclusion.setText("0");
         }
-        if (mTotalIncome.getText().toString().length() == 0){
+        if (mTotalIncome.getText().toString().length() == 0){// if user leaves total income blank it sets it to zero
             mTotalIncome.setText("0");
         }
 
-        int totalIncome = Integer.parseInt(mTotalIncome.getText().toString());
-        int benefits = Integer.parseInt(mBenefits.getText().toString());
-        int uifEx = Integer.parseInt((mUIFExclusion.getText().toString()));
+        int totalIncome = Integer.parseInt(mTotalIncome.getText().toString()); // stores 'total Income' user input in totalIncome Variable
+        int benefits = Integer.parseInt(mBenefits.getText().toString()); // stores 'benefits' user input in benefits Variable
+        int uifEx = Integer.parseInt((mUIFExclusion.getText().toString())); // stores 'UIF exclusions' user input in uif Exclusions Variable
 
-        double totalUIF = (totalIncome + uifEx - benefits)*0.02;
-        double empCont = totalUIF/2;
+        double uifRem = totalIncome + uifEx - benefits; // stores the 'UIF Remunerations' in uifRem variable
+        int limitUIF = 14872; // The 2012 UIF Ceiling, the June 2021 is R 17 712
 
-        mTotalUIF.setText(String.valueOf(totalUIF));
-        mEmployeeContribution.setText(String.valueOf(empCont));
-        mEmployerContribution.setText(String.valueOf(empCont));
+        if (uifRem > limitUIF){ // if the employee earns more than the ceiling amount, the contribution is calculated using the maximum earnings ceiling amount.
+
+            uifRem = 14872; // Set to the maximum earnings ceiling amaount if Income exceeds the maximum earnings ceiling amount.
+            double totalUIF = (uifRem)*0.02; // The algorithm used to calculate the totalUIF payment
+            double empCont = totalUIF/2; // The algorithm used to calculate the both the employee and the employer contributions
+
+            mTotalUIF.setText(String.valueOf(totalUIF)); // set the textView to total UIF Contributions
+            mEmployeeContribution.setText(String.valueOf(empCont)); // set the textView to employee UIF Contributions
+            mEmployerContribution.setText(String.valueOf(empCont)); // set the textView to employer UIF Contributions
+        }else
+            {// When the emplloyee earns below the service amount
+            double totalUIF = (uifRem)*0.02; // The algorithm used to calculate the totalUIF payment
+            double empCont = totalUIF/2; // The algorithm used to calculate the both the employee and the employer contributions
+
+            mTotalUIF.setText(String.valueOf(totalUIF));// set the textView to total UIF Contributions
+            mEmployeeContribution.setText(String.valueOf(empCont)); // set the textView to employee UIF Contributions
+            mEmployerContribution.setText(String.valueOf(empCont));} // set the textView to employer UIF Contributions
     }
 }
