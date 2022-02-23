@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         mEmployerContribution = findViewById(R.id.employerContAns);
         mTotalUIF = findViewById(R.id.totEmpCont);
         mButtonCalculate = findViewById(R.id.button);
+
         if (mBenefits.getText().toString().length() == 0){
             mBenefits.setText("0");
         }
@@ -67,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         int benefits = Integer.parseInt(mBenefits.getText().toString());
         int uifEx = Integer.parseInt((mUIFExclusion.getText().toString()));
 
-        double totalUIF = ((totalIncome + benefits) - uifEx)*0.02;
+        double totalUIF = (totalIncome + uifEx - benefits)*0.02;
         double empCont = totalUIF/2;
 
         mTotalUIF.setText(String.valueOf(totalUIF));
